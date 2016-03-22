@@ -49,7 +49,7 @@ module.exports = Field.create({
       center: latLong
     });
 
-    marker = new google.maps.Marker({
+    var marker = new google.maps.Marker({
       map: map,
       draggable: true,
       animation: google.maps.Animation.DROP,
@@ -204,7 +204,7 @@ module.exports = Field.create({
 	renderMap () {
 		if (!this.props.enableMapsAPI) return null;
 		return (
-			<div style={{width: '100%', heigh: 350}} id='map'>
+			<div style={{width: '100%', height: 350}} id='map'>
 			</div>
 		);
 	},
