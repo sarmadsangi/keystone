@@ -39,6 +39,24 @@ module.exports = Field.create({
 		}
 	},
 
+	componentDidMount () {
+		var latLong = {
+			lat: this.props.value.geo[0],
+			lng: this.props.value.geo[1],
+		}
+		var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 13,
+      center: latLong
+    });
+
+    marker = new google.maps.Marker({
+      map: map,
+      draggable: true,
+      animation: google.maps.Animation.DROP,
+      position: latLong
+    });
+	},
+
 	shouldCollapse () {
 		return this.props.collapse && !this.formatValue();
 	},
@@ -183,6 +201,14 @@ module.exports = Field.create({
 		);
 	},
 
+	renderMap () {
+		if (!this.props.enableMapsAPI) return null;
+		return (
+			<div style={{width: '100%', heigh: 350}} id='map'>
+			</div>
+		);
+	},
+
 	renderUI () {
 
 		if (!this.shouldRenderField()) {
@@ -210,6 +236,7 @@ module.exports = Field.create({
 				{this.renderPostcodeCountry()}
 				{this.renderGeo()}
 				{this.renderGoogleOptions()}
+				{this.renderMap()}
 				{this.renderNote()}
 			</div>
 		);
