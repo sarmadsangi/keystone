@@ -94,7 +94,7 @@ module.exports = Field.create({
 			this.props.value.name,
 			this.props.value.street1,
 			this.props.value.street2,
-			this.props.value.suburb,
+			this.props.value.city,
 			this.props.value.state,
 			this.props.value.postcode,
 			this.props.value.country,
@@ -116,12 +116,12 @@ module.exports = Field.create({
 		);
 	},
 
-	renderSuburbState () {
+	renderCityState () {
 		return (
-			<FormField label="Suburb / State" className="form-field--secondary" htmlFor={this.props.path + '.suburb'}>
+			<FormField label="City / State" className="form-field--secondary" htmlFor={this.props.path + '.city'}>
 				<FormRow>
 					<FormField width="two-thirds" className="form-field--secondary">
-						<FormInput name={this.props.path + '.suburb'} ref="suburb" value={this.props.value.suburb} onChange={this.fieldChanged.bind(this, 'suburb')} placeholder="Suburb" />
+						<FormInput name={this.props.path + '.city'} ref="city" value={this.props.value.city} onChange={this.fieldChanged.bind(this, 'city')} placeholder="City" />
 					</FormField>
 					<FormField width="one-third" className="form-field--secondary">
 						<FormInput name={this.props.path + '.state'} ref="state" value={this.props.value.state} onChange={this.fieldChanged.bind(this, 'state')} placeholder="State" />
@@ -225,14 +225,9 @@ module.exports = Field.create({
 
 		return (
 			<div>
-				<FormField label={this.props.label}>
-					{showMore}
-				</FormField>
-				{this.renderField('number', 'PO Box / Shop', true)}
-				{this.renderField('name', 'Building Name', true)}
+				<FormField label={this.props.label} />
 				{this.renderField('street1', 'Street Address')}
-				{this.renderField('street2', 'Street Address 2', true)}
-				{this.renderSuburbState()}
+				{this.renderCityState()}
 				{this.renderPostcodeCountry()}
 				{this.renderGeo()}
 				{this.renderGoogleOptions()}

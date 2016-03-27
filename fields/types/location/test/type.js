@@ -18,7 +18,7 @@ exports.testFieldType = function (List) {
 		name: '',
 		street1: '',
 		street2: '',
-		suburb: '',
+		city: '',
 		state: '',
 		postcode: '',
 		country: '',
@@ -43,7 +43,7 @@ exports.testFieldType = function (List) {
 			var result = List.fields['location.basic'].addFilterToQuery({
 				city: 'NYC',
 			});
-			demand(result['location.basic.suburb']).eql(/NYC/i);
+			demand(result['location.basic.city']).eql(/NYC/i);
 		});
 
 		it('should allow to filter by state', function () {
@@ -85,7 +85,7 @@ exports.testFieldType = function (List) {
 			'location.basic.name': 'name',
 			'location.basic.street1': 'street 1',
 			'location.basic.street2': 'street 2',
-			'location.basic.suburb': 'suburb',
+			'location.basic.city': 'city',
 			'location.basic.state': 'state',
 			'location.basic.postcode': 'postcode',
 			'location.basic.country': 'country',
@@ -96,7 +96,7 @@ exports.testFieldType = function (List) {
 			demand(testItem.location.basic.name).be('name');
 			demand(testItem.location.basic.street1).be('street 1');
 			demand(testItem.location.basic.street2).be('street 2');
-			demand(testItem.location.basic.suburb).be('suburb');
+			demand(testItem.location.basic.city).be('city');
 			demand(testItem.location.basic.state).be('state');
 			demand(testItem.location.basic.postcode).be('postcode');
 			demand(testItem.location.basic.country).be('country');
@@ -116,7 +116,7 @@ exports.testFieldType = function (List) {
 					name: 'name',
 					street1: 'street 1',
 					street2: 'street 2',
-					suburb: 'suburb',
+					city: 'city',
 					state: 'state',
 					postcode: 'postcode',
 					country: 'country',
@@ -128,7 +128,7 @@ exports.testFieldType = function (List) {
 			demand(testItem.location.basic.name).be('name');
 			demand(testItem.location.basic.street1).be('street 1');
 			demand(testItem.location.basic.street2).be('street 2');
-			demand(testItem.location.basic.suburb).be('suburb');
+			demand(testItem.location.basic.city).be('city');
 			demand(testItem.location.basic.state).be('state');
 			demand(testItem.location.basic.postcode).be('postcode');
 			demand(testItem.location.basic.country).be('country');
@@ -161,21 +161,21 @@ exports.testFieldType = function (List) {
 		List.fields['location.basic'].inputIsValid({}, true, testItem).must.be.false();
 		List.fields['location.basic'].inputIsValid({
 			'location.basic.street1': 'street1',
-			'location.basic.suburb': '',
+			'location.basic.city': '',
 		}, true, testItem).must.be.false();
 		List.fields['location.basic'].inputIsValid({
 			'location.basic.street1': 'street1',
-			'location.basic.suburb': 'suburb',
+			'location.basic.city': 'city',
 		}, true, testItem).must.be.true();
 		List.fields['location.basic'].inputIsValid({
 			location: { basic: {
 				street1: 'street1',
-				suburb: 'suburb',
+				city: 'city',
 			} },
 		}, true, testItem).must.be.true();
 		List.fields['location.customRequired'].inputIsValid({
 			'location.customRequired.street1': 'street1',
-			'location.customRequired.suburb': 'suburb',
+			'location.customRequired.city': 'city',
 		}, true, testItem).must.be.false();
 		List.fields['location.customRequired'].inputIsValid({
 			'location.customRequired.state': 'state',

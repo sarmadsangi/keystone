@@ -2,7 +2,7 @@ import React from 'react';
 import ItemsTableCell from '../../../admin/client/components/ItemsTableCell';
 import ItemsTableValue from '../../../admin/client/components/ItemsTableValue';
 
-const SUB_FIELDS = ['street1', 'suburb', 'state', 'postcode', 'country'];
+const SUB_FIELDS = ['street1', 'city', 'state', 'postcode', 'country'];
 
 var LocationColumn = React.createClass({
 	displayName: 'LocationColumn',

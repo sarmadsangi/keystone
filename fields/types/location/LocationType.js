@@ -37,7 +37,7 @@ function location (list, path, options) {
 
 	// default this.requiredPaths
 	if (!this.requiredPaths) {
-		this.requiredPaths = ['street1', 'suburb'];
+		this.requiredPaths = ['street1', 'city'];
 	}
 
 	location.super_.call(this, list, path, options);
@@ -58,7 +58,7 @@ location.prototype.addToSchema = function () {
 		name: this._path.append('.name'),
 		street1: this._path.append('.street1'),
 		street2: this._path.append('.street2'),
-		suburb: this._path.append('.suburb'),
+		city: this._path.append('.city'),
 		state: this._path.append('.state'),
 		postcode: this._path.append('.postcode'),
 		country: this._path.append('.country'),
@@ -85,7 +85,7 @@ location.prototype.addToSchema = function () {
 		street1: getFieldDef(String, 'street1'),
 		street2: getFieldDef(String, 'street2'),
 		street3: getFieldDef(String, 'street3'),
-		suburb: getFieldDef(String, 'suburb'),
+		city: getFieldDef(String, 'city'),
 		state: getFieldDef(String, 'state'),
 		postcode: getFieldDef(String, 'postcode'),
 		country: getFieldDef(String, 'country'),
@@ -98,7 +98,7 @@ location.prototype.addToSchema = function () {
 			this.get(paths.name),
 			this.get(paths.street1),
 			this.get(paths.street2),
-			this.get(paths.suburb),
+			this.get(paths.city),
 			this.get(paths.state),
 			this.get(paths.postcode),
 			this.get(paths.country),
@@ -123,7 +123,7 @@ location.prototype.addToSchema = function () {
  */
 var FILTER_PATH_MAP = {
 	street: 'street1',
-	city: 'suburb',
+	city: 'city',
 	state: 'state',
 	code: 'postcode',
 	country: 'country',
@@ -167,7 +167,7 @@ location.prototype.isModified = function (item) {
 	|| item.isModified(this.paths.name)
 	|| item.isModified(this.paths.street1)
 	|| item.isModified(this.paths.street2)
-	|| item.isModified(this.paths.suburb)
+	|| item.isModified(this.paths.city)
 	|| item.isModified(this.paths.state)
 	|| item.isModified(this.paths.postcode)
 	|| item.isModified(this.paths.country)
@@ -178,7 +178,7 @@ location.prototype.isModified = function (item) {
  * Validates that a value for this field has been provided in a data object
  *
  * options.required specifies an array or space-delimited list of paths that
- * are required (defaults to street1, suburb)
+ * are required (defaults to street1, city)
  *
  * Deprecated
  */
@@ -214,7 +214,7 @@ location.prototype.inputIsValid = function (data, required, item) {
 location.prototype.updateItem = function (item, data, callback) {
 
 	var paths = this.paths;
-	var fieldKeys = ['number', 'name', 'street1', 'street2', 'suburb', 'state', 'postcode', 'country'];
+	var fieldKeys = ['number', 'name', 'street1', 'street2', 'city', 'state', 'postcode', 'country'];
 	var geoKeys = ['geo', 'geo_lat', 'geo_lng'];
 	var valueKeys = fieldKeys.concat(geoKeys);
 	var valuePaths = valueKeys;
@@ -404,9 +404,9 @@ location.prototype.googleLookup = function (item, region, update, callback) {
 				location.street1 = location.street1 || [];
 				location.street1.push(val.short_name);
 			}
-			// in some cases, you get suburb, city as locality - so only use the first
-			if (_.indexOf(val.types, 'locality') >= 0 && !location.suburb) {
-				location.suburb = val.long_name;
+			// in some cases, you get city, city as locality - so only use the first
+			if (_.indexOf(val.types, 'locality') >= 0 && !location.city) {
+				location.city = val.long_name;
 			}
 			if (_.indexOf(val.types, 'administrative_area_level_1') >= 0) {
 				location.state = val.short_name;
