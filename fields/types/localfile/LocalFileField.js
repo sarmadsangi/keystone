@@ -27,6 +27,10 @@ module.exports = Field.create({
 		}
 	},
 
+	isFileFormatImage () {
+		return (/\.(gif|jpg|jpeg|png)$/i).test(this.getFilename());
+	},
+
 	getFileURL () {
 		if (!this.hasLocal() && this.hasExisting()) {
 			return this.props.value.url;
@@ -37,22 +41,22 @@ module.exports = Field.create({
 		this.fileFieldNode().value = '';
 		this.setState({
 			removeExisting: false,
-			localSource: null,
-			origin: false,
-			action: null,
+			localSource:    null,
+			origin:         false,
+			action:         null
 		});
 	},
 
-	fileChanged (event) { // eslint-disable-line no-unused-vars
+	fileChanged  (event) {//eslint-disable-line no-unused-vars
 		this.setState({
-			origin: 'local',
+			origin: 'local'
 		});
 	},
 
-	removeFile (e) {
+	removeFile  (e) {
 		var state = {
 			localSource: null,
-			origin: false,
+			origin: false
 		};
 
 		if (this.hasLocal()) {
@@ -98,13 +102,19 @@ module.exports = Field.create({
 		}
 	},
 
-	renderFileDetails (add) {
+	renderFileDetails  (add) {
 		var values = null;
 
 		if (this.hasFile() && !this.state.removeExisting) {
+			var value = <div className='field-value'>{this.getFilename()}</div>;
+
+			if (this.isFileFormatImage()) {
+				value = <img src={this.getFileURL()} />;
+			}
+
 			values = (
-				<div className="file-values">
-					<FormInput noedit>{this.getFilename()}</FormInput>
+				<div className='file-values'>
+					{value}
 				</div>
 			);
 		}
@@ -214,16 +224,13 @@ module.exports = Field.create({
 
 		return (
 			<FormField label={this.props.label} className="field-type-localfile">
-
 				{this.renderFileField()}
 				{this.renderFileAction()}
-
 				<div className="file-container">{container}</div>
 				{body}
 				{this.renderNote()}
-
 			</FormField>
 		);
-	},
+	}
 
 });
