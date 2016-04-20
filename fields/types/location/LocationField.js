@@ -40,10 +40,13 @@ module.exports = Field.create({
 	},
 
 	componentDidMount () {
-		var latLong = {
-			lat: this.props.value.geo[0],
-			lng: this.props.value.geo[1],
-		}
+		var latLong;
+		try {
+		       latLong = {
+                       		lat: this.props.value.geo[0],
+                        	lng: this.props.value.geo[1],
+                	}	
+		} catch (e) {console.log(e);}
 		var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 13,
       center: latLong
@@ -147,17 +150,14 @@ module.exports = Field.create({
 	},
 
 	renderGeo () {
-		if (this.state.collapsedFields.geo) {
-			return null;
-		}
 		return (
 			<FormField label="Lat / Lng" className="form-field--secondary" htmlFor={this.props.paths.geo}>
 				<FormRow>
 					<FormField width="one-half" className="form-field--secondary">
-						<FormInput name={this.props.paths.geo} ref="geo1" value={this.props.value.geo ? this.props.value.geo[1] : ''} onChange={this.geoChanged.bind(this, 1)} placeholder="Latitude" />
+						<FormInput name={this.props.paths.geo} ref="geo1" value={this.props.value.geo ? this.props.value.geo[0] : ''} onChange={this.geoChanged.bind(this, 0)} placeholder="Latitude" />
 					</FormField>
 					<FormField width="one-half" className="form-field--secondary">
-						<FormInput name={this.props.paths.geo} ref="geo0" value={this.props.value.geo ? this.props.value.geo[0] : ''} onChange={this.geoChanged.bind(this, 0)} placeholder="Longitude" />
+						<FormInput name={this.props.paths.geo} ref="geo0" value={this.props.value.geo ? this.props.value.geo[1] : ''} onChange={this.geoChanged.bind(this, 1)} placeholder="Longitude" />
 					</FormField>
 				</FormRow>
 			</FormField>
@@ -182,55 +182,55 @@ module.exports = Field.create({
 		return (
 			<FormField offsetAbsentLabel>
 				<Checkbox
-					label="Autodetect and improve location on save"
-					name={this.props.paths.improve}
-					onChange={this.updateGoogleOption.bind(this, 'improve')}
-					checked={this.state.improve}
-					title="When checked, this will attempt to fill missing fields. It will also get the lat/long" />
-				{replace}
-			</FormField>
-		);
-	},
-
-	renderNote () {
-		if (!this.props.note) return null;
-		return (
-			<FormField offsetAbsentLabel>
-				<FormNote note={this.props.note} />
-			</FormField>
-		);
-	},
-
-	renderMap () {
-		if (!this.props.enableMapsAPI) return null;
-		return (
-			<div style={{width: '100%', height: 350}} id='map'>
-			</div>
-		);
-	},
-
-	renderUI () {
-
-		if (!this.shouldRenderField()) {
-			return (
-				<FormField label={this.props.label}>{this.renderValue()}</FormField>
+						label="Autodetect and improve location on save"
+						name={this.props.paths.improve}
+						onChange={this.updateGoogleOption.bind(this, 'improve')}
+						checked={this.state.improve}
+						title="When checked, this will attempt to fill missing fields. It will also get the lat/long" />
+					{replace}
+				</FormField>
 			);
-		}
+		},
 
-		/* eslint-disable no-script-url */
-		var showMore = !_.isEmpty(this.state.collapsedFields)
-			? <Button type="link" className="collapsed-field-label" onClick={this.uncollapseFields}>(show more fields)</Button>
-			: null;
-		/* eslint-enable */
+		renderNote () {
+			if (!this.props.note) return null;
+			return (
+				<FormField offsetAbsentLabel>
+					<FormNote note={this.props.note} />
+				</FormField>
+			);
+		},
 
-		return (
-			<div>
-				<FormField label={this.props.label} />
-				{this.renderField('street1', 'Street Address')}
-				{this.renderCityState()}
-				{this.renderPostcodeCountry()}
-				{this.renderGeo()}
-				{this.renderGoogleOptions()}
+		renderMap () {
+			if (!this.props.enableMapsAPI) return null;
+			return (
+				<div style={{width: '100%', height: 350}} id='map'>
+				</div>
+			);
+		},
+
+		renderUI () {
+
+			if (!this.shouldRenderField()) {
+				return (
+					<FormField label={this.props.label}>{this.renderValue()}</FormField>
+				);
+			}
+
+			/* eslint-disable no-script-url */
+			var showMore = !_.isEmpty(this.state.collapsedFields)
+				? <Button type="link" className="collapsed-field-label" onClick={this.uncollapseFields}>(show more fields)</Button>
+				: null;
+			/* eslint-enable */
+
+			return (
+				<div>
+					<FormField label={this.props.label} />
+					{this.renderField('street1', 'Street Address')}
+					{this.renderCityState()}
+					{this.renderPostcodeCountry()}
+					{this.renderGeo()}
+					{this.renderGoogleOptions()}
 				{this.renderMap()}
 				{this.renderNote()}
 			</div>
